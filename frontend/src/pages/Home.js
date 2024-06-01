@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import { Bounce, toast } from "react-toastify";
 
 export default function Home() {
     const [users, setUsers] = useState([]);
 
+    // eslint-disable-next-line no-unused-vars
     const {id} = useParams();
 
     // Used to refresh the page everytime when it is loaded
@@ -19,7 +21,13 @@ export default function Home() {
     };
 
     const deleteUser = async (id) => {
-        await axios.delete(`http://localhost:8080/user/${id}`);
+        await axios.delete(`http://localhost:8080/user/${id}`).then((res) => {
+            toast.error("Deleted Successfully", {
+                position: "top-right",
+                autoClose: 5000,
+                transition: Bounce,
+            })
+        });
         loadUsers();
     }
 

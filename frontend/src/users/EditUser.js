@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { Bounce, toast } from "react-toastify";
 
 export default function EditUser() {
     let navigate = useNavigate();
@@ -21,11 +22,18 @@ export default function EditUser() {
 
     useEffect(() => {
         loadUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        await axios.put(`http://localhost:8080/user/${id}`, user);
+        await axios.put(`http://localhost:8080/user/${id}`, user).then((res) => {
+            toast.info("Updated Successfully", {
+                position: "top-right",
+                autoClose: 5000,
+                transition: Bounce,
+            });
+        });
         navigate("/");
     };
 
